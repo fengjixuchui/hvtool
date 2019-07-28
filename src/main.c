@@ -15,8 +15,14 @@ int WINAPI main(void)
 
     if (wargc == 2)
     {
+        if (!wcscmp(wargv[1], L"endp"))
+            ListEndpoints();
+
         if (!wcscmp(wargv[1], L"list"))
             ListContainers();
+
+        if (!wcscmp(wargv[1], L"net"))
+            ListNetworks();
     }
 
     if (wargc == 3)

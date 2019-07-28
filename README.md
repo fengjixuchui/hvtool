@@ -45,8 +45,10 @@ Hyper-V Administrators group. Here are the valid options for hvtool:
 Usage: WslReverse.exe [option] [argument]
 
 Options:
-  kill    [VM Id]       Kill the VM 
+  endp                  List network endpoints
+  kill    [VM Id]       Kill the VM
   list                  List all the VMs
+  net                   List networks
 ```
 
 
