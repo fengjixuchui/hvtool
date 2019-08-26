@@ -42,22 +42,25 @@ All the APIs require administrator privilege or user need to be member of
 Hyper-V Administrators group. Here are the valid options for hvtool:
 
 ```
-Usage: WslReverse.exe [option] [argument]
-
+Usage: hvtool.exe [options]
 Options:
-  endp                  List network endpoints
-  kill    [VM Id]       Kill the VM
-  list                  List all the VMs
-  net                   List networks
+  endp    Get list of network endpoints.
+  help    Show this usage information.
+  list    Get list of containers.
+  net     Get list of networks.
+  wsl     Get Windows side IPv4 address connected with WSL2 VM.
 ```
 
 
 ## Project layout
 
-* hcs: Function declarations of Hyper-V Host Compute Service.
-* helper: Helper functions for logging, output parsing.
-* hvtool: wrapper functions which calls underlying APIs.
+* hcn: Function declarations of Hyper-V Host Networking Service Client Library.
+* hcs: Function declarations of Hyper-V Host Compute Service Core Client Library.
+* helper: Helper functions for logging.
+* hvtool: Wrapper functions which calls underlying APIs.
+* [jsmn]: Small JSON parser/tokenizer.
 
+[jsmn]: https://github.com/zserge/jsmn.git
 
 ## License
 
@@ -65,7 +68,7 @@ hvtool is licensed under the GNU General Public License v3.
 A full copy of the license is provided in [LICENSE](LICENSE).
 
     hvtool -- Experiments with Hyper-V VM and container managing APIs.
-    Copyright (c) 2019 Biswapriyo Nath
+    Copyright (C) 2019 Biswapriyo Nath
     
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

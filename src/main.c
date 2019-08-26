@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "hvtool.h"
+#include "helper.h"
 
 int WINAPI main(void)
 {
@@ -9,7 +10,7 @@ int WINAPI main(void)
 
     if (wargc < 2)
     {
-        wprintf(L"No option provided.\n");
+        wprintf(L"Try '%s help' for more information.\n", wargv[0]);
         return 1;
     }
 
@@ -17,6 +18,9 @@ int WINAPI main(void)
     {
         if (!wcscmp(wargv[1], L"endp"))
             ListEndpoints();
+
+        if (!wcscmp(wargv[1], L"help"))
+            Usage(wargv[0]);
 
         if (!wcscmp(wargv[1], L"list"))
             ListContainers();
