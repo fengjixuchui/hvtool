@@ -23,6 +23,9 @@ int WINAPI main(void)
 
         if (!wcscmp(wargv[1], L"net"))
             ListNetworks();
+
+        if (!wcscmp(wargv[1], L"wsl"))
+            GetWslIP(FALSE);
     }
 
     if (wargc == 3)

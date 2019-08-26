@@ -1,3 +1,9 @@
+/*
+ * Taken from computenetwork.h in Windows SDK
+ * Exported DLLs:
+ * computenetwork.dll aka. ext-ms-win-hyperv-computenetwork-l1-1-0.dll
+ */
+
 #ifndef HCN_H
 #define HCN_H
 

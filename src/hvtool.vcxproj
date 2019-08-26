@@ -52,6 +52,7 @@
     <ClInclude Include="hcs.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="hvtool.h" />
+    <ClInclude Include="jsmn.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
