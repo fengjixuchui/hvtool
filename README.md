@@ -42,13 +42,22 @@ All the APIs require administrator privilege or user need to be member of
 Hyper-V Administrators group. Here are the valid options for hvtool:
 
 ```
-Usage: hvtool.exe [options]
+Usage: %ls [options] [agruments]
 Options:
-  endp    Get list of network endpoints.
-  help    Show this usage information.
-  list    Get list of containers.
-  net     Get list of networks.
-  wsl     Get Windows side IPv4 address connected with WSL2 VM.
+  endp       Get list of network endpoints.
+  help       Show this usage information.
+  list       Get list of containers.
+  net        Get list of networks.
+  kill       Container ID
+             Kill the specified container.
+  pause      Container ID
+             Pause the specified container.
+  resume     Container ID
+             Resume the specified container.
+  shutdown   Container ID
+             Shutdown the specified container (for VM only).
+  wsl        Get Windows side IPv4 address connected with WSL2 VM.
+The Container argument can be found in "list" option output.
 ```
 
 
