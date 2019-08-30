@@ -35,7 +35,16 @@ int WINAPI main(void)
     if (wargc == 3)
     {
         if (!wcscmp(wargv[1], L"kill"))
-            KillContainer(wargv[2]);
+            ContainerUtility(wargv[2], HVTOOL_KILL_CONTAINER);
+
+        if (!wcscmp(wargv[1], L"pause"))
+            ContainerUtility(wargv[2], HVTOOL_PAUSE_CONTAINER);
+
+        if (!wcscmp(wargv[1], L"resume"))
+            ContainerUtility(wargv[2], HVTOOL_RESUME_CONTAINER);
+
+        if (!wcscmp(wargv[1], L"shutdown"))
+            ContainerUtility(wargv[2], HVTOOL_SHUTDOWN_CONTAINER);
     }
 
     return 0;

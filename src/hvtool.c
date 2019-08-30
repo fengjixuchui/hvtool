@@ -4,61 +4,72 @@
 #include "hcn.h"
 #include "hcs.h"
 #include "helper.h"
+#include "hvtool.h"
 #include "jsmn.h"
 
-static int jsoneq(const wchar_t* json, jsmntok_t* tok, const wchar_t* s)
-{
-    if (tok->type == JSMN_STRING && (int)wcslen(s) == tok->end - tok->start &&
-        wcsncmp(json + tok->start, s, tok->end - tok->start) == 0)
-    {
-        return 0;
-    }
-    return -1;
-}
-
-HRESULT WINAPI KillContainer(PWSTR VmId)
+HRESULT WINAPI ContainerUtility(PWSTR VmId, enum HVTOOL_CONTAINER_OPERATIONS Operation)
 {
     HRESULT hRes;
     PWSTR result = NULL;
-    HCS_OPERATION operation = NULL;
-    HCS_SYSTEM computeSystem = NULL;
+    HCS_OPERATION hcsOperation = NULL;
+    HCS_SYSTEM hcsSystem = NULL;
 
-    operation = HcsCreateOperation(NULL, NULL);
-    hRes = HcsOpenComputeSystem(VmId, DEFAULT_REQUESTED_ACCESS, &computeSystem);
-    if (!hRes)
+    hcsOperation = HcsCreateOperation(NULL, NULL);
+    hRes = HcsOpenComputeSystem(VmId, DEFAULT_REQUESTED_ACCESS, &hcsSystem);
+    if (hRes == 0)
     {
-        HcsTerminateComputeSystem(computeSystem, operation, NULL);
-        hRes = HcsWaitForOperationResult(operation, INFINITE, &result);
+        switch (Operation)
+        {
+        case HVTOOL_KILL_CONTAINER:
+            hRes = HcsTerminateComputeSystem(hcsSystem, hcsOperation, NULL);
+            break;
+
+        case HVTOOL_PAUSE_CONTAINER:
+            hRes = HcsPauseComputeSystem(hcsSystem, hcsOperation, NULL);
+            break;
+
+        case HVTOOL_RESUME_CONTAINER:
+            hRes = HcsResumeComputeSystem(hcsSystem, hcsOperation, NULL);
+            break;
+
+        case HVTOOL_SHUTDOWN_CONTAINER:
+            hRes = HcsShutDownComputeSystem(hcsSystem, hcsOperation, NULL);
+            break;
+        }
+
+        hRes = HcsWaitForOperationResult(hcsOperation, INFINITE, &result);
+        if(hRes != 0)
+            Log(hRes, L"HcsWaitForOperationResult");
     }
     else
         Log(hRes, L"HcsOpenComputeSystem");
 
     if (result)
         CoTaskMemFree(result);
-    if (operation)
-        HcsCloseOperation(operation);
-    if (computeSystem)
-        HcsCloseComputeSystem(computeSystem);
+    if (hcsOperation)
+        HcsCloseOperation(hcsOperation);
+    if (hcsSystem)
+        HcsCloseComputeSystem(hcsSystem);
     return hRes;
 }
 
 HRESULT WINAPI ListContainers(void)
 {
     HRESULT hRes;
-    HCS_OPERATION operation = NULL;
+    HCS_OPERATION hcsOperation = NULL;
     PWSTR result = NULL;
 
-    operation = HcsCreateOperation(NULL, NULL);
-    hRes = HcsEnumerateComputeSystems(NULL, operation);
-    hRes = HcsWaitForOperationResult(operation, INFINITE, &result);
+    hcsOperation = HcsCreateOperation(NULL, NULL);
+    hRes = HcsEnumerateComputeSystems(NULL, hcsOperation);
+    hRes = HcsWaitForOperationResult(hcsOperation, INFINITE, &result);
 
-    if (!hRes)
+    if (hRes == 0)
         wprintf(L"%ls\n", result);
 
     if (result)
         CoTaskMemFree(result);
-    if (operation)
-        HcsCloseOperation(operation);
+    if (hcsOperation)
+        HcsCloseOperation(hcsOperation);
     return hRes;
 }
 
@@ -79,7 +90,7 @@ HRESULT WINAPI ListEndpoints(void)
     hRes = CLSIDFromString(IdString, &Id);
     Log(hRes, L"CLSIDFromString");
 
-    if (!hRes)
+    if (hRes == 0)
     {
         hRes = HcnOpenEndpoint(&Id, &hcnEndpoint, NULL);
         hRes = HcnQueryEndpointProperties(hcnEndpoint, NULL, &Properties, NULL);
@@ -110,7 +121,7 @@ HRESULT WINAPI ListNetworks(void)
     hRes = CLSIDFromString(IdString, &Id);
     Log(hRes, L"CLSIDFromString");
 
-    if (!hRes)
+    if (hRes == 0)
     {
         hRes = HcnOpenNetwork(&Id, &hcnNetwork, NULL);
         hRes = HcnQueryNetworkProperties(hcnNetwork, NULL, &Properties, NULL);
@@ -122,6 +133,16 @@ HRESULT WINAPI ListNetworks(void)
     if (hcnNetwork)
         HcnCloseNetwork(hcnNetwork);
     return hRes;
+}
+
+static int jsoneq(const wchar_t* json, jsmntok_t* tok, const wchar_t* s)
+{
+    if (tok->type == JSMN_STRING && (int)wcslen(s) == tok->end - tok->start &&
+        wcsncmp(json + tok->start, s, tok->end - tok->start) == 0)
+    {
+        return 0;
+    }
+    return -1;
 }
 
 /* Enable verbose mode to print whole JSON output */
