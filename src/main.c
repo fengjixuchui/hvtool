@@ -16,34 +16,34 @@ int WINAPI main(void)
 
     if (wargc == 2)
     {
-        if (!wcscmp(wargv[1], L"endp"))
+        if (!_wcsicmp(wargv[1], L"endp"))
             ListEndpoints();
 
-        if (!wcscmp(wargv[1], L"help"))
+        if (!_wcsicmp(wargv[1], L"help"))
             Usage(wargv[0]);
 
-        if (!wcscmp(wargv[1], L"list"))
+        if (!_wcsicmp(wargv[1], L"list"))
             ListContainers();
 
-        if (!wcscmp(wargv[1], L"net"))
+        if (!_wcsicmp(wargv[1], L"net"))
             ListNetworks();
 
-        if (!wcscmp(wargv[1], L"wsl"))
+        if (!_wcsicmp(wargv[1], L"wsl"))
             GetWslIP(FALSE);
     }
 
     if (wargc == 3)
     {
-        if (!wcscmp(wargv[1], L"kill"))
+        if (!_wcsicmp(wargv[1], L"kill"))
             ContainerUtility(wargv[2], HVTOOL_KILL_CONTAINER);
 
-        if (!wcscmp(wargv[1], L"pause"))
+        if (!_wcsicmp(wargv[1], L"pause"))
             ContainerUtility(wargv[2], HVTOOL_PAUSE_CONTAINER);
 
-        if (!wcscmp(wargv[1], L"resume"))
+        if (!_wcsicmp(wargv[1], L"resume"))
             ContainerUtility(wargv[2], HVTOOL_RESUME_CONTAINER);
 
-        if (!wcscmp(wargv[1], L"shutdown"))
+        if (!_wcsicmp(wargv[1], L"shutdown"))
             ContainerUtility(wargv[2], HVTOOL_SHUTDOWN_CONTAINER);
     }
 
