@@ -13,13 +13,16 @@
 typedef void *HCS_OPERATION, *HCS_SYSTEM;
 typedef void (*HCS_OPERATION_COMPLETION)(HCS_OPERATION operation, PVOID context);
 
-void HcsCloseComputeSystem(HCS_SYSTEM computeSystem);
-void HcsCloseOperation(HCS_OPERATION operation);
-HCS_OPERATION HcsCreateOperation(PVOID context, HCS_OPERATION_COMPLETION callback);
+void WINAPI HcsCloseComputeSystem(HCS_SYSTEM computeSystem);
+void WINAPI HcsCloseOperation(HCS_OPERATION operation);
+HCS_OPERATION WINAPI HcsCreateOperation(PVOID context, HCS_OPERATION_COMPLETION callback);
 
-HRESULT HcsEnumerateComputeSystems(PCWSTR query, HCS_OPERATION operation);
-HRESULT HcsOpenComputeSystem(PCWSTR id, DWORD requestedAccess, HCS_SYSTEM* computeSystem);
-HRESULT HcsTerminateComputeSystem(HCS_SYSTEM computeSystem, HCS_OPERATION operation, PCWSTR options);
-HRESULT HcsWaitForOperationResult(HCS_OPERATION operation, DWORD timeoutMs, PWSTR* resultDocument);
+HRESULT WINAPI HcsEnumerateComputeSystems(PCWSTR query, HCS_OPERATION operation);
+HRESULT WINAPI HcsOpenComputeSystem(PCWSTR id, DWORD requestedAccess, HCS_SYSTEM* computeSystem);
+HRESULT WINAPI HcsPauseComputeSystem(HCS_SYSTEM computeSystem, HCS_OPERATION operation, PCWSTR options);
+HRESULT WINAPI HcsResumeComputeSystem(HCS_SYSTEM computeSystem, HCS_OPERATION operation, PCWSTR options);
+HRESULT WINAPI HcsShutDownComputeSystem(HCS_SYSTEM computeSystem, HCS_OPERATION operation, PCWSTR options);
+HRESULT WINAPI HcsTerminateComputeSystem(HCS_SYSTEM computeSystem, HCS_OPERATION operation, PCWSTR options);
+HRESULT WINAPI HcsWaitForOperationResult(HCS_OPERATION operation, DWORD timeoutMs, PWSTR* resultDocument);
 
 #endif /* HCS_H */
